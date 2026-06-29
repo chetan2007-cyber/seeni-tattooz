@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeni Tattooz | Gallery Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif'],
+                    },
+                    colors: { amber: { 500: '#f59e0b', 600: '#d97706' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(23, 23, 23, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-neutral-950 text-neutral-200 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="login-box" class="w-full max-w-md glass-card p-8 rounded-2xl border border-white/10 shadow-2xl space-y-6">
+        <div class="text-center">
+            <h1 class="font-heading text-2xl font-bold text-white tracking-wider uppercase"><span class="text-amber-500">Seeni</span> Admin</h1>
+            <p class="text-xs text-neutral-400 mt-2 tracking-widest uppercase">Gallery Management Panel</p>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="text-xs text-neutral-400 uppercase tracking-wider block mb-1">Admin PIN</label>
+                <input type="password" id="pin-input" placeholder="Enter 4-digit PIN" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
+                <p id="login-error" class="text-rose-500 text-xs mt-2 hidden">Incorrect PIN. Try 1234.</p>
+            </div>
+            <button onclick="handleLogin()" class="w-full bg-amber-500 text-neutral-950 font-bold text-sm py-3.5 rounded-lg tracking-wider uppercase transition-all hover:bg-white hover:shadow-lg">Log In</button>
+        </div>
+    </div>
+
+    <div id="admin-dashboard" class="hidden w-full max-w-4xl glass-card p-8 rounded-2xl border border-white/10 space-y-8 mt-10">
+        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+            <div>
+                <h2 class="font-heading text-3xl font-bold text-white">Manage Gallery</h2>
+                <p class="text-xs text-neutral-400 uppercase tracking-widest mt-1">Update images directly on the fly</p>
+            </div>
+            <button onclick="handleLogout()" class="text-xs tracking-wider uppercase text-neutral-400 hover:text-rose-400 transition-colors"><i class="fa-solid fa-right-from-bracket mr-2"></i> Log Out</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 glass-card p-6 rounded-xl border border-white/5">
+            <div>
+                <label class="text-xs text-neutral-400 uppercase tracking-wider block mb-1">Slot Position</label>
+                <select id="img-slot" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none">
+                    <option value="0">Slot 1 (Art Form)</option>
+                    <option value="1">Slot 2 (Solar Geometry)</option>
+                    <option value="2">Slot 3 (Dragon Shading)</option>
+                    <option value="3">Slot 4 (Polynesian Forearm)</option>
+                    <option value="4">Slot 5 (Owl & Flora)</option>
+                    <option value="5">Slot 6 (Fine Line Stamp)</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-xs text-neutral-400 uppercase tracking-wider block mb-1">Image Link (URL)</label>
+                <input type="text" id="img-url" placeholder="Paste Direct Image URL (e.g. https://...)" class="w-full bg-neutral-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none">
+            </div>
+            <div class="flex items-end">
+                <button onclick="updateGallery()" class="w-full bg-amber-500 text-neutral-950 font-bold text-sm py-3 rounded-lg uppercase tracking-wider hover:bg-white transition-all">Update Portfolio Slot</button>
+            </div>
+        </div>
+
+        <div id="success-msg" class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs p-4 rounded-lg hidden text-center tracking-wide uppercase">
+            <i class="fa-solid fa-circle-check mr-2"></i> Portfolio slot updated! (Changes take up to 1 minute to compile on Vercel deployment if updated in code).
+        </div>
+
+        <div>
+            <h3 class="text-xs text-neutral-400 uppercase tracking-widest mb-4">Active Showcase Grid</h3>
+            <div id="slots-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // Default PIN is set to 1234
+        const ADMIN_PIN = "1234";
+
+        // Store active URLs mapping to your image slots 1 to 6
+        let gallerySlots = [
+            "port1.jpeg",
+            "port2.jpeg",
+            "port3.jpeg",
+            "port4.jpeg",
+            "port5.jpeg",
+            "port6.jpeg"
+        ];
+
+        function handleLogin() {
+            const pin = document.getElementById('pin-input').value;
+            if (pin === ADMIN_PIN) {
+                document.getElementById('login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderSlots();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            document.getElementById('login-box').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('pin-input').value = "";
+        }
+
+        function renderSlots() {
+            const grid = document.getElementById('slots-grid');
+            grid.innerHTML = '';
+            gallerySlots.forEach((slot, index) => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-xl border border-white/5 text-center space-y-2">
+                        <div class="w-full aspect-square bg-neutral-900 rounded-lg overflow-hidden border border-white/10 flex items-center justify-center text-xs text-neutral-500">
+                            ${slot.startsWith('http') ? `<img src="${slot}" class="w-full h-full object-cover">` : `Local Asset: ${slot}`}
+                        </div>
+                        <span class="text-xs text-neutral-400 block truncate">Slot ${index + 1}</span>
+                    </div>
+                `;
+            });
+        }
+
+        function updateGallery() {
+            const slotIndex = parseInt(document.getElementById('img-slot').value);
+            const newUrl = document.getElementById('img-url').value;
+
+            if (!newUrl) return alert('Please paste an image URL first.');
+
+            // Update runtime array mapping
+            gallerySlots[slotIndex] = newUrl;
+            
+            // Re-render visual list and display success banner
+            renderSlots();
+            document.getElementById('success-msg').classList.remove('hidden');
+            setTimeout(() => { document.getElementById('success-msg').classList.add('hidden'); }, 4000);
+
+            // NOTE: For live dynamic updates, you can store this in LocalStorage or a Database. 
+            // In a purely static site, this acts as an interface to grab the links for updating `index.html`.
+            console.log("Updated Gallery Array State: ", gallerySlots);
+        }
+    </script>
+</body>
+</html>
