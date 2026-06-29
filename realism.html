@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realism Tattoo Gallery | Seeni Tattooz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Montserrat', 'sans-serif'], heading: ['Playfair Display', 'serif'], }, colors: { amber: { 500: '#f59e0b', 600: '#d97706' } } } } }
+    </script>
+    <style>
+        .glass-card { background: rgba(23, 23, 23, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="bg-neutral-950 text-neutral-200 antialiased selection:bg-amber-500 selection:text-neutral-950">
+    <header class="fixed top-0 left-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-4 font-heading text-2xl font-bold text-white hover:text-amber-500 transition-colors">
+                <img src="logo1.png" alt="Logo" class="h-12 object-contain">
+                <span><span class="text-amber-500">SEENI</span> TATTOOZ</span>
+            </a>
+            <a href="index.html#gallery" class="text-sm tracking-wider text-neutral-400 hover:text-white uppercase font-medium flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Gallery
+            </a>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-24 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-amber-500 text-xs font-semibold uppercase tracking-widest block mb-2 tracking-[0.2em]">Masterpiece Portfolio</span>
+            <h1 class="font-heading text-4xl sm:text-6xl font-bold text-white">Realism Shading & Portraits</h1>
+            <div class="w-20 h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-6"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-card rounded-2xl overflow-hidden p-4 border border-white/10 group">
+                <img src="port5.jpeg" alt="Realism Sleeve" class="w-full h-full object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500">
+                <div class="mt-4 p-2">
+                    <h3 class="text-white font-heading text-xl font-bold">Dragon Sleeve Shading</h3>
+                    <p class="text-neutral-400 text-sm font-light mt-1">Deep rich blacks, soft grey washes, and hyper-realistic skin flow.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
