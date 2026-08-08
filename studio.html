@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Gallery | Seeni Tattooz Mysore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        amber: { 500: '#f59e0b', 600: '#d97706' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-card {
+            background: rgba(23, 23, 23, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-gold-glow:hover {
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 10px 40px -10px rgba(245, 158, 11, 0.3);
+            transform: translateY(-5px);
+            background: rgba(30, 30, 30, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-neutral-950 text-neutral-200 antialiased selection:bg-amber-500 selection:text-neutral-950 min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-4 font-heading text-2xl sm:text-3xl font-bold tracking-wider text-white hover:text-amber-500 transition-colors">
+                <img src="logo1.png" alt="Seeni Tattooz Logo" class="h-14 w-auto object-contain">
+                <span><span class="text-amber-500">SEENI</span> TATTOOZ</span>
+            </a>
+            <a href="index.html#gallery" class="text-sm tracking-wider text-neutral-400 hover:text-white uppercase font-medium flex items-center gap-2 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN GALLERY CONTENT -->
+    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex-grow">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-amber-500 text-xs font-semibold uppercase tracking-widest block mb-2 tracking-[0.2em]">Studio Environment</span>
+            <h1 class="font-heading text-4xl sm:text-6xl font-bold text-white tracking-wide">Studio Gallery</h1>
+            <div class="w-20 h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-6"></div>
+            <p class="text-neutral-400 text-sm sm:text-base font-light mt-4">Take a look inside our clean, comfortable, and sterile workspace located in Kuvempu Nagara, Mysore.</p>
+        </div>
+
+        <!-- Dynamic Grid Container -->
+        <div id="studio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Populated via JavaScript or Fallbacks -->
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-neutral-950 border-t border-white/5 py-8 text-center text-neutral-600 text-xs tracking-wide">
+        <p>© 2026 Seeni Tattooz. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Load custom items from localStorage if available, or fallback to studio environment images
+        let storedGalleries = {
+            tattoos: ["port1.jpeg", "port2.jpeg", "port3.jpeg", "port4.jpeg", "port6.jpeg", "port7.jpeg"],
+            studio: ["port11.jpeg", "port12.jpeg"]
+        };
+        
+        if (localStorage.getItem('seeni_galleries')) {
+            storedGalleries = JSON.parse(localStorage.getItem('seeni_galleries'));
+        }
+
+        const grid = document.getElementById('studio-grid');
+        const studioItems = storedGalleries.studio || ["port11.jpeg", "port12.jpeg"];
+
+        if (studioItems.length === 0) {
+            grid.innerHTML = `<p class="col-span-full text-center text-neutral-500 text-sm py-12">No studio photos added yet.</p>`;
+        } else {
+            studioItems.forEach(url => {
+                grid.innerHTML += `
+                    <div class="glass-card hover-gold-glow rounded-2xl overflow-hidden p-4 border border-white/10 group">
+                        <div class="w-full aspect-[4/5] bg-neutral-900 rounded-xl overflow-hidden relative">
+                            <img src="${url}" alt="Studio Atmosphere" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
