@@ -68,7 +68,7 @@
 
         <!-- Dynamic Grid Container -->
         <div id="studio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Populated via JavaScript or Fallbacks -->
+            <!-- Populated via JavaScript -->
         </div>
     </main>
 
@@ -78,23 +78,22 @@
     </footer>
 
     <script>
-        // Load custom items from localStorage if available, or fallback to studio environment images
-        let storedGalleries = {
-            tattoos: ["port1.jpeg", "port2.jpeg", "port3.jpeg", "port4.jpeg", "port6.jpeg", "port7.jpeg"],
-            studio: ["port11.jpeg", "port12.jpeg"]
-        };
-        
-        if (localStorage.getItem('seeni_galleries')) {
-            storedGalleries = JSON.parse(localStorage.getItem('seeni_galleries'));
-        }
+        // ==========================================
+        // ADD YOUR STUDIO IMAGE FILES / URLS HERE
+        // ==========================================
+        const myStudioImages = [
+            "port11.jpeg",
+            "port12.jpeg"
+            // You can easily add more by appending them like this:
+            // "your-studio-photo.jpeg",
+        ];
 
         const grid = document.getElementById('studio-grid');
-        const studioItems = storedGalleries.studio || ["port11.jpeg", "port12.jpeg"];
 
-        if (studioItems.length === 0) {
+        if (myStudioImages.length === 0) {
             grid.innerHTML = `<p class="col-span-full text-center text-neutral-500 text-sm py-12">No studio photos added yet.</p>`;
         } else {
-            studioItems.forEach(url => {
+            myStudioImages.forEach(url => {
                 grid.innerHTML += `
                     <div class="glass-card hover-gold-glow rounded-2xl overflow-hidden p-4 border border-white/10 group">
                         <div class="w-full aspect-[4/5] bg-neutral-900 rounded-xl overflow-hidden relative">
